@@ -6,7 +6,8 @@
     <title>Register</title>
 
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="home.css"> 
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="login.css"> 
 </head>
 <body>
 
@@ -33,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //$password=hash('sha512',$password);
 
         // เขียนคำสั่ง SQL เพื่อบันทึกข้อมูล
-        $sql = "INSERT INTO employee_data (ID_Employee, Em_FirstName, Em_LastName, Em_Phone, UserName, Password)
-        VALUES ('$idem','$fname', '$lname', '$phone', '$username', '$password')";
+        $sql = "INSERT INTO employee_data (ID_Employee, Em_FirstName, Em_LastName, Em_Phone, UserName, Password, Status)
+        VALUES ('$idem','$fname', '$lname', '$phone', '$username', '$password', '0')";
 
         // ทำการ query และตรวจสอบการทำงาน
         if (mysqli_query($conn, $sql)) {
@@ -55,16 +56,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <section class="banner">
     <div class="banner-logo">
-        <img src="tool_image/Logo.png">
+        <img src="image/Logo.png">
     </div>
 </section>
 
-<br><br>
+<br>
 
 <div class="container">
-    <div class="row g-3 align-items-center col-md-5 p-2 border border-dark-subtle mx-auto"> 
-
-    <h1 class="display-5 text-center mb-2 mt-1">Register</h1>
+    <div class="box">
+    <h1 class="display-5 text-center mb-1 mt-1">Register</h1>
         <form method="POST" action="">
         <div class="col-auto">    
             <label>ID Employee</label>
@@ -92,12 +92,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p style="color:grey; font-family:Quicksand;"><small><i>Maximum 10 characters</i></small></p>
             </div>
         
-        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-            <input type="submit" name="submit" class="btn btn-success mb-2" value="Submit">
-            <input type="reset" name="cancel" class="btn btn-secondary mb-2" value="Cancel">
-            </div>
-            <p class="text-center">Already have an account? <a href="login.php"> Login </a></p>
-            
+        <div class="center">
+            <input type="submit" name="submit" class="buttonbg-green" value="Submit">
+            <input type="reset" name="cancel" class="buttonbg-gray" value="Cancel">
+            <p class="text-center" style="margin-top:5px;">Already have an account? <a href="login.php"> Login </a></p>
+        </div> 
         </form>
     </div>
     

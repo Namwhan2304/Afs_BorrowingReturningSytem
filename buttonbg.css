@@ -1,0 +1,70 @@
+.margin-page {
+    margin-right: 125px;
+    margin-left: 125px;
+    padding: 0;
+}
+
+
+.margin-addpage {
+    margin-right: 300px;
+    margin-left: 300px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.margin-sequance {
+    margin-right: 200px;
+    margin-left: 200px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.position {
+    position: relative;
+}
+  
+.center {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+}
+
+.right {
+    position: absolute;
+    right: 0;
+}
+
+
+.buttonbg {
+    background-color: #505050;
+    padding: 6px 10px; /*ระยะห่างของขอบปุ่มและข้อความภายใน*/
+    text-align: center; /*การจัดวางข้อความในปุ่ม (ตรงกลาง)*/
+    text-decoration: none; /*การจัดรูปแบบข้อความ (ไม่มีขีดเส้นใต้)*/
+    display: inline-block; /*การแสดงผลเป็น inline-block*/
+    font-size: 16px; /*ขนาดตัวอักษร*/
+    margin: 2px 2px; /*ระยะห่างรอบขอบปุ่ม*/
+    transition-duration: 0.4s; /*ระยะเวลาที่ใช้ในการเปลี่ยนสีเมื่อ hover (0.4 วินาที)*/
+    cursor: pointer; /*รูปลูกศรของเมาส์เมื่อชี้ไปยังปุ่ม*/
+    border-radius: 6px; /*ขอบมน*/
+}
+
+.buttonbggreen{
+    background-color: #009860;
+    color: white;
+    border: 1px solid #009860;
+}
+.buttonbggreen:hover {
+    background-color: #ffffff;
+    color: #009860;
+}
+
+.buttonbgback{
+    background-color: #505050;
+    color: white;
+    border: 1px solid #505050;
+}
+.buttonbgback:hover {
+    background-color: #ffffff;
+    color: #505050;
+}

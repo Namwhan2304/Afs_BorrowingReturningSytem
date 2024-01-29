@@ -1,5 +1,5 @@
 <?php
-include 'condb.php'; //เรียกใช้ condb.php เพื่อเชื่อมฐานข้อมูล
+include 'php_session_start.php';; //เรียกใช้ condb.php เพื่อเชื่อมฐานข้อมูล
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +18,7 @@ include 'condb.php'; //เรียกใช้ condb.php เพื่อเช�
 
 <?php include 'banner.php'; ?>
  
-    <h1 class="display-4 text-center mb-2">Employee</h1>
+    <h1 class="display-5 text-center mb-2">Employee</h1>
     <!-- h3 ขนาดหัวข้อ -->
     <!-- text-center จัดรูปแบบตรงกลาง-->
     <!-- alert alert-light รูปแบบข้อความ -->

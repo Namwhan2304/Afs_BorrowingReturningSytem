@@ -1,6 +1,5 @@
 <?php
 include 'condb.php'; //เรียกใช้ condb.php เพื่อเชื่อมฐานข้อมูล
-session_start();
 ?>
 
 <!DOCTYPE html>
@@ -14,69 +13,40 @@ session_start();
     <!---Link to css-->
     <link rel="stylesheet" href="home.css"> 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
-   
-    <meta http-equiv="refresh" content="0;url=home.php">
+
 </head>
+
+
 <body>
 
 <?php include 'banner.php'; ?>
 
-<div class="container"> 
-    <h1 class="display-4 text-center mb-2">Report</h1>
-    
-    <div class="col-7 mb-2 mx-auto "> 
-        <a href="home_vertification.php" class="btn btn-outline-success mb-2 mt-2">Waiting for verification</a>
-        <a href="home_approved.php" class="btn btn-outline-success mb-2 mt-2">Approved</a>
-        <a href="home_not-approved.php" class="btn btn-outline-success mb-2 mt-2">Not approved</a>
-        <a href="home_due-for-return.php" class="btn btn-outline-success mb-2 mt-2">Items due for return</a>
-        <a href="home_returned.php" class="btn btn-outline-success mb-2 mt-2">returned</a>
+<style>
+        .custom-link {
+            color: black;
+            text-decoration: none; /* เอาเส้นล้างข้อความออก */
+        }
+
+
+</style>
+
+<div class="container">
+
+    <!--  Heading Status of tools  -->
+
+    <div class="display-5 text-center mb-2">
+        <a href="home_page.php" class="custom-link">Status of tools</a>
     </div>
+    <!--  End Heading Status of tools  -->
 
     
-    <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Borrow No.</th>
-                <th scope="col">Name</th>
-                <th scope="col">ID Tool</th>
-                <th scope="col">Borrower</th>
-                <th scope="col">Borrowing Date</th>
-                <th scope="col">Returning Date</th>
-                <th scope="col">Construction site</th>
-
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-
-    <!-- ข้อมูลการยืม
-    <?php
-        $sql = "SELECT * FROM ";
-        $result=mysqli_query($conn,$sql);
-        while($row=mysqli_fetch_array($result)){
-        ?>
-            <tr>
-                <td><?= $row["ID_Tool"] ?></td>
-                <td><?= $row["Tool_Name"] ?></td>
-                <td><?= $row["ID_MainCategoryTool"] ?></td>
-                <td><?= $row["ID_SubcategoryTool"] ?></td>
-                <td><?= $row["ID_SubSubcategoryTool"] ?></td>
-                <td><?= $row["Tool_Amount"] ?></td>
-                <td> <a href="tool_edit.php?id=<?=$row["ID_Tool"]?>" class="btn btn-secondary ">Edit</a> </td> 
-                <td> <a href="tool_delete.php?id=<?=$row["ID_Tool"]?>" class="btn btn-danger" onclick="Del(this.href);return false;">Delete</a> </td>
-                </tr>
-                    <?php
-                    }
-                    ?>
-        -->
-        </table>
-
-</div>
-
-    
-    
-    
-
-
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <a href="home_alltool.php" class="btn btn-outline-success mb-2 mt-2">All tool</a>    
+        <a href="home_available.php" class="btn btn-outline-success mb-2 mt-2">Available</a>
+        <a href="home_unavailable.php" class="btn btn-outline-success mb-2 mt-2">Unavailable</a>
+        <a href="home_record.php" class="btn btn-outline-success mb-2 mt-2">Record</a> 
+        
+    </div>
 
 </body>
 </html>
