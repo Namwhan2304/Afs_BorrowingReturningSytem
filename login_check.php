@@ -7,6 +7,8 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
+    //$password=hash('sha512',$password);
+
     // Check if username and password match in the database
     $sql = "SELECT * FROM `employee_data` WHERE ID_Employee ='$username'";
     $result = mysqli_query($conn, $sql);

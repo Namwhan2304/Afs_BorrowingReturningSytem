@@ -33,31 +33,32 @@ if (isset($_GET['id'])) {
 <div class="container"> 
     <h1 class="display-5 text-center mb-2">Tool</h1>
     
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end" style = "margin-right:5%">
         <a href="tool_show.php" class="button buttongreen">Back</a>
+        <a href="tool_add_sequence.php?id=<?= $toolName ?>" class="button buttongreen">Add +</a>
     </div>
     
     <!--  Start Table  -->
     
-    <table>
+    <table style="width:90%;margin-left: auto;margin-right: auto">
         <!-- Heading Table -->
         <thead>
             <tr> 
                 <th style="width:10%">Image</th>
                 <th style="width:10%">ID</th>
-                <th style="width:20%">Name</th>
+                <th style="width:15%">Name</th>
                 <th style="width:15%">Category</th>
-                <th style="width:15%">Subcategory</th>
+                <th style="width:10%">Subcategory</th>
                 <th style="width:10%">Sequence</th>
                 <th style="width:10%">Status</th>
                 <th style="width:5%">Edit</th>
                 <th style="width:5%">Delete</th>
             </tr>
         </thead>
-        
+
+    
         <!-- Body Table -->
         <tbody>
-
         
     <?php
         $sql = "SELECT tool_data.*, tool_maincategory.Name_MainCategory, tool_subcategory.Name_SubCategory
@@ -98,6 +99,7 @@ if (isset($_GET['id'])) {
     <?php
         }
     ?>
+
     </tbody>
 </div>
 </body>

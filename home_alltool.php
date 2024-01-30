@@ -10,7 +10,6 @@ include 'php_session_start.php'; // เรียกใช้ condb.php เพื
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"> 
     <!---Link to css-->
     <link rel="stylesheet" href="home.css"> 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
@@ -27,7 +26,15 @@ include 'home.php';
 <div class="container">
 
     <!--  Start Table  -->
-    <style>
+<style>
+    body {
+        scrollbar-width: none; /* ซ่อน scrollbar ใน Firefox */
+    }
+        
+    body::-webkit-scrollbar {
+        display: none; /* ซ่อน scrollbar ใน Chrome, Safari, และ Edge */
+    }
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -42,44 +49,69 @@ include 'home.php';
     }
 
     tr:hover {background-color: #F0F8FF;} /*พื้นหลังเปลี่ยนสีเมื่อเลือก*/
-    </style>
+</style>
 
-    <table> 
-        <tr> <!-- Heading Table -->
-            <th style="width:10%">Image</th>
-            <th style="width:10%">ID</th>
-            <th style="width:15%">Name</th>
-            <th style="width:15%">Category</th>
-            <th style="width:10%">Status</th>
-            <th style="width:15%">Borrower</th>
-            <th style="width:15%">Construction site</th>
-            <th style="width:10%">Borrowing Date</th>
-
-        </tr>
+    <table>
+        <thead>
+            <tr> <!-- Heading Table -->
+                <th style="width:10%">Image</th>
+                <th style="width:10%">ID</th>
+                <th style="width:15%">Name</th>
+                <th style="width:15%">Category</th>
+                <th style="width:10%">Status</th>
+                <th style="width:15%">Borrower</th>
+                <th style="width:15%">Construction site</th>
+                <th style="width:10%">Borrowing Date</th>
+            </tr>
+        </thead>
         
         <!-- Body Table -->
-        <tr> 
-            <td>#</td>
-            <td>E0101001</td>
-            <td>Screw driver gun</td>
-            <td>Electrical</td>
-            <td style="color:red;">Unavailable</td>
-            <td>Phuthita</td>
-            <td>Townholl</td>
-            <td>1/1/2024</td>
-        </tr>
+        <tbody>
+        <?php
+        $sql = "SELECT tool_data.*, tool_maincategory.Name_MainCategory,
+                employee_data.Em_FirstName, employee_data.Em_LastName, employee_data.Em_Phone,
+                borrowing.ID_Employee, borrowing.Site, borrowing.Date_Borrow
+                FROM tool_data
+                JOIN tool_maincategory ON tool_data.ID_MainCategoryTool = tool_maincategory.ID_MainCategory
+                LEFT JOIN borrowing ON tool_data.ID = borrowing.ID_Tool AND borrowing.Status = 1
+                LEFT JOIN employee_data ON borrowing.ID_Employee = employee_data.ID_Employee";
 
-        <tr> 
-            <td>#</td>
-            <td>E0101002</td>
-            <td>Screw driver gun</td>
-            <td>Electrical</td>
-            <td style="color:Green;">Available</td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+            $result = mysqli_query($conn, $sql);
 
+            if (!$result) {
+                die("Query failed: " . mysqli_error($conn));
+            }
+            
+            while ($row = mysqli_fetch_array($result)) {
+        ?>
+            <tr> 
+                <td><img src="tool_image/<?= $row["Tool_Image"] ?>" width="80px" height="80px" class="center"></td>
+                <td><?= $row["ID"]?></td>
+                <td><?= $row["Tool_Name"]?> (No.<?= $row["Equipment_Sequence"] ?>)</td>
+                <td><?= $row["Name_MainCategory"] ?></td>
+                <td><?php
+                    if ($row["Status"] == 0) {
+                        echo "<div style=color:green;>";
+                        echo "Available";
+                        echo "</div>";
+                    } elseif ($row["Status"] == 1) {
+                        echo "<div style=color:red;>";
+                        echo "Unavailable";
+                        echo "</div>";
+                    } else {
+                        echo "<div style=color:gray;>";
+                        echo "Unknown"; // หรือค่าเริ่มต้นอื่น ๆ ที่คุณต้องการแสดง
+                        echo "</div>";
+                    }
+                    ?></td>
+                <td><?= $row["Em_FirstName"] ?> <?= $row["Em_LastName"] ?></td>
+                <td><?= $row["Site"] ?></td>
+                <td><?= $row["Date_Borrow"] ?></td>
+            </tr>
+            <?php
+            }
+            ?>
+        </tbody>
     </table>
         
     <!--  End Table  -->

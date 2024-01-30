@@ -10,6 +10,8 @@
             max-width: 600px;
             margin: auto;
             display: block;
+            border: 1px solid lightgray;
+            border-radius: 6px;
         }
 
         #captureButton {
@@ -18,6 +20,7 @@
             padding: 10px;
             font-size: 16px;
             cursor: pointer;
+            border-radius: 6px
         }
 
         #result {

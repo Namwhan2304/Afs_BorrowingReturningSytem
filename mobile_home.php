@@ -133,7 +133,7 @@ if (!$conn) {
 
         tbody td {
             line-height: 1.5;
-            font-size: 12px;
+            font-size: 11px;
             
         }
 
@@ -167,7 +167,10 @@ if (!$conn) {
 
         <tbody>
         <?php
-            $sql = "SELECT borrowing.*";
+            $sql = "SELECT borrowing.*, tool_data.Tool_Name, tool_data.Tool_Image, Equipment_Sequence
+            FROM borrowing
+            JOIN tool_data ON borrowing.ID_Tool = tool_data.ID
+            WHERE borrowing.ID_Employee = '$username'AND borrowing.Status= 1";
 
             $result = mysqli_query($conn, $sql);
 
@@ -182,16 +185,16 @@ if (!$conn) {
                         <img src="tool_image/<?= $row["Tool_Image"] ?>" width="70px" height="70px" class="center">
                     </td>
 
-                    <td style="width:70%">
-                        Borrowing ID <?= $row["ID_Borrowing"] ?> 
+                    <td style="width:80%">
+                        <div style="font-weight: bold;">Borrow No. <?= $row["ID_Borrowing"] ?> </div>
                         Tool ID <?= $row["ID_Tool"] ?> 
-                        <br><?= $row["Tool_Name"] ?> (No.)
+                        <br><?= $row["Tool_Name"] ?> (<?= $row["Equipment_Sequence"] ?>)
                         <br>Site <?= $row["Site"] ?>
                         <br>Date <?= $row["Date_Borrow"] ?>
                     </td>
 
                     <td style="width:10%">
-                        <a href="mobile_return.php" class="button buttongreen">Return</a>
+                    <a href="mobile_return_id.php?id=<?php echo $row["ID_Borrowing"]; ?>" class="button buttongreen">Return</a>
                         <br><a href="mobile_borrow.php" class="button buttongreen">Borrow</a>
                     </td>
                 </tr>

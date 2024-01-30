@@ -11,7 +11,6 @@
 
 </head>
 <body>
-
     <section class="banner">
         <div class="banner-logo">
             <img src="image/Logo.png">
@@ -19,7 +18,7 @@
     </section>
 
     <!-- Nav Start -->
-    <div class="container"> 
+<div class="container"> 
     <nav>
         <div class="logo" style="display: flex;">
             <p style="font-size: 18px;">Borrowing-Returning System</p>
@@ -42,5 +41,5 @@
             <Li><a href="logout.php">Logout</a></Li>
         </ul>
     </nav>
-    </div>
+</div>
     <!-- Nav End -->

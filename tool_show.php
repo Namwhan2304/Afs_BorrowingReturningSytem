@@ -41,6 +41,7 @@ include 'php_session_start.php'; // เรียกใช้ condb.php เพื
                 <th style="width:15%">Subcategory</th>
                 <th style="width:15%">Amount</th>
                 <th style="width:10%"></th>
+                
                 <!--<th style="width:5%"></th>-->
             </tr>
         </thead>
@@ -67,7 +68,7 @@ include 'php_session_start.php'; // เรียกใช้ condb.php เพื
             <td><?= $row["Name_SubCategory"] ?></td>
             <td><?= $row["EquipmentCount"] ?></td>
             <td> <a href="tool_view.php?id=<?= $row["Tool_Name"] ?>" class="btn btn-secondary ">View</a> </td>
-            <!--<td> <a href="tool_add_sequence.php?id=<?= $row["Tool_Name"] ?>" class="btn btn-success" >Add</a></td>-->
+            <!--td> <a href="tool_add_sequence.php?id=<?= $row["Tool_Name"] ?>" class="btn btn-success" >Add</a></td-->
 
         </tr>
     <?php

@@ -49,44 +49,63 @@ include 'home.php';
     <table>
         <thead>
             <tr> <!-- Heading Table -->
-                <th rowspan="2" style="width:10%">No.</th>
+                <th rowspan="2" style="width:10%">Borrow No.</th>
                 <th rowspan="2" style="width:10%">Image</th>
-                <th rowspan="2" style="width:10%">ID</th>
+                <th rowspan="2" style="width:10%">Tool ID</th>
                 <th rowspan="2" style="width:15%">Name</th>
                 <th rowspan="2" style="width:15%">Borrower</th>
                 <th rowspan="2" style="width:15%">Construction site</th>
-                <th colspan="2"style="width:10%">Date</th>
+                <th rowspan="2"style="width:5%">Status</th>
+                <th colspan="2"style="width:20%">Date</th>
             </tr>
             <tr style="height:5px"> 
-                <th style="width:5%">Borrowing</th>
-                <th style="width:5%">Returning</th>
+                <th style="width:10%">Borrowing</th>
+                <th style="width:10%">Returning</th>
             </tr>
         </thead>
         
+        <tbody>
         <?php
-        $sql = "SELECT borrowing.*, tool_data.ID
-        FROM borrowing
-        JOIN tool_data ON borrowing.ID_Tool = tool_data.ID";
-
+        $sql = "SELECT borrowing.*, tool_data.Tool_Name, tool_data.ID_MainCategoryTool, tool_data.Tool_Image, tool_data.Equipment_Sequence,
+                tool_maincategory.Name_MainCategory,
+                employee_data.Em_FirstName, employee_data.Em_LastName, employee_data.Em_Phone
+                FROM tool_data
+                JOIN tool_maincategory ON tool_data.ID_MainCategoryTool = tool_maincategory.ID_MainCategory
+                JOIN borrowing ON borrowing.ID_Tool = tool_data.ID
+                JOIN employee_data ON borrowing.ID_Employee = employee_data.ID_Employee";
 
         $result = mysqli_query($conn, $sql);
         while ($row = mysqli_fetch_array($result)) {
-        ?>
-        <tr>
-            <!-- Body Table -->
-            <td><?= $row["ID_Borrowing"] ?></td>
-            <td><img src="tool_image/<?= $row["Tool_Image"] ?>" width="60px" height="60px"></td>
-            <td><?= $row["ID_Employee"] ?></td>
-            <td><?= $row["Tool_Name"] ?></td>
-            <td><?= $row["Em_FirstName"] ?></td>
-            <td><?= $row["Site"] ?></td>
-            <td><?= $row["Date_Borrow"] ?></td>
-            <td>#</td>
-        </tr>
-    <?php
-    }
-    ?>
-
+            ?>
+            <tr>
+                <!-- Body Table -->
+                <td><?= $row["ID_Borrowing"] ?></td>
+                <td><img src="tool_image/<?= $row["Tool_Image"] ?>" width="60px" height="60px"></td>
+                <td><?= $row["ID_Tool"]?></td>
+                <td><?= $row["Tool_Name"]?>  (No.<?= $row["Equipment_Sequence"] ?>)</td>
+                <td><?= $row["Em_FirstName"]?>  <?= $row["Em_LastName"]?></td>
+                <td><?= $row["Site"] ?></td>
+                <td><?php
+                        if ($row["Status"] == 1) {
+                            echo "<div style=color:blue;>";
+                            echo "Borrowing";
+                            echo "</div>";
+                        } elseif ($row["Status"] == 2) {
+                            echo "<div style=color:green;>";
+                            echo "Returned";
+                            echo "</div>";
+                        } else {
+                            echo "<div style=color:gray;>";
+                            echo "Unknown"; // หรือค่าเริ่มต้นอื่น ๆ ที่คุณต้องการแสดง
+                            echo "</div>";
+                        }
+                        ?></td>
+                <td><?= $row["Date_Borrow"]?></td>
+                <td><?= $row["Date_Return"]?></td>
+            </tr>
+            <?php
+            }
+            ?>
         </tbody>
     </table>
         

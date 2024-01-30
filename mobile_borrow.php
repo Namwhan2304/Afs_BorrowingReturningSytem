@@ -7,16 +7,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ID_Tool = mysqli_real_escape_string($conn, $_POST['id_tool']);
     $Site = mysqli_real_escape_string($conn, $_POST['site']);
     $Date_Borrow = mysqli_real_escape_string($conn, $_POST['date_borrow']);
+    $Status = 1;
 
     // ดึง ID_Employee จาก session
     $username = mysqli_real_escape_string($conn, $_SESSION["username"]);
 
     // เขียน SQL Query เพื่อบันทึกข้อมูล
-    $sql = "INSERT INTO borrowing (ID_Employee, ID_Tool, Site, Date_Borrow) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO borrowing (ID_Employee, ID_Tool, Site, Date_Borrow, Status) VALUES (?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn, $sql);
 
     // Bind parameters
-    mysqli_stmt_bind_param($stmt, "siss", $username, $ID_Tool, $Site, $Date_Borrow);
+    mysqli_stmt_bind_param($stmt, "sissi", $username, $ID_Tool, $Site, $Date_Borrow, $Status);
 
     // Execute the statement
     if (mysqli_stmt_execute($stmt)) {
@@ -76,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            margin-top: 150px;
+            margin-top: 300px;
             z-index: 999; /* ค่า z-index ที่สูงกว่าจะทับตัวที่มีค่าน้อยกว่า */
         }
         div.table-box {
@@ -96,6 +97,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     </style>
 
+<style>
+        #video {
+            width: 100%;
+            height: 100px;
+            margin-right:5px;
+            display: block;
+            border: 1px solid lightgray;
+            border-radius: 6px
+        }
+
+        #captureButton {
+            height: 40px;
+            padding: 0px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 6px;
+            border: 1px solid lightgray;
+            background-color: #eeee;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+</style>
+
     <div class="table-box" style="margin-top:65px;">
         <div class="display-5 text-center">
             <a href="mobile_borrow.php" class="custom-link">Borrow Tool</a>
@@ -111,8 +138,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 margin-top: 10PX;
             }
 
-            tbody tr {
+            tbody tr td{
                 height: 43px;
+                /*border: 1px solid red;*/
             }
 
             .st-right {
@@ -168,9 +196,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <td style="width:25%">
                                 <label>Tool ID</label>
                             </td>
-                            <td style="width:75%">
-                                <input type="number" name="id_tool" required class="form-control">
+                            <td style="width:75%;height: 100px;display: flex;margin-bottom:3px">
+                                
+                                <!--input type="number" name="id_tool" required class="form-control"-->
+                                <!-- Video feed from the camera -->
+                                <video id="video" autoplay></video>
+
+                                <!-- Capture button with camera icon -->
+                                <button id="captureButton" onclick="captureQRCode()">
+                                📷
+                                </button>
+                                <script>
+                                    // Get the video element and set up camera access
+                                    const video = document.getElementById('video');
+
+                                    navigator.mediaDevices.getUserMedia({ video: true })
+                                        .then((stream) => {
+                                            video.srcObject = stream;
+                                        })
+                                        .catch((error) => {
+                                            console.error('Error accessing camera: ', error);
+                                        });
+                                </script>
                             </td>
+                        </tr>
+                        <tr>
+                            <td style="width:25%">
+                                <label></label>
+                            </td>
+                            <td style="width:75%">
+                                <!-- Input field for Tool ID -->
+                                <input type="number" name="id_tool" class="form-control">
+                            </td>
+                            
                         </tr>
 
                         <tr>
@@ -203,6 +261,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </tbody>
         </table>
+
+<!-- Include the ZXing library -->
+<script src="https://cdn.rawgit.com/zxing-js/library/gh-pages/dist/instascan.min.js"></script>
+
+<script>
+    // Create an instance of Instascan
+    const instascan = new Instascan.Scanner({ video: document.getElementById('video') });
+
+    // Attach a listener for QR Code scanning
+    instascan.addListener('scan', function (content) {
+        // Update the input field with the scanned QR Code data
+        document.getElementById('toolIdInput').value = content;
+
+        // Optionally, you can perform further actions with the scanned data
+        // For example, submit a form or make an AJAX request to the server
+        // ...
+
+        // Stop the camera after a successful scan
+        instascan.stop();
+    });
+
+    // Get the video element and set up camera access
+    const video = document.getElementById('video');
+
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+            video.srcObject = stream;
+        })
+        .catch((error) => {
+            console.error('Error accessing camera: ', error);
+        });
+
+    // Function to capture QR Code from the video feed
+    function captureQRCode() {
+        // Create a canvas element to draw the captured photo
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+
+        // Set the canvas dimensions to match the video feed
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        // Draw the current video frame onto the canvas
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // Convert the canvas content to a data URL (base64 encoded image)
+        const imageDataUrl = canvas.toDataURL('image/png');
+
+        // Send the image data to the server or process it as needed
+        processImageData(imageDataUrl);
+    }
+
+    // Function to process the captured image data (send to server, etc.)
+    function processImageData(imageDataUrl) {
+        // Decode the QR Code image data using Instascan
+        const decodedData = instascan.decode(imageDataUrl);
+
+        // Update the input field with the decoded data
+        document.getElementById('toolIdInput').value = decodedData;
+    }
+</script>
+
+
+
     </div>
 
 </body>

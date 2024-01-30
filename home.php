@@ -47,6 +47,7 @@ include 'condb.php'; //เรียกใช้ condb.php เพื่อเช�
         <a href="home_record.php" class="btn btn-outline-success mb-2 mt-2">Record</a> 
         
     </div>
+</div>
 
 </body>
 </html>

@@ -11,15 +11,70 @@ session_start();
 
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
-    <link rel="stylesheet" href="login.css"> 
 </head>
 <body>
+
+<style>
+.box {
+    border: 1px solid rgb(180, 180, 180);
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+}
+
+.center {
+    text-align: center;
+    
+}
+
+table tr td{
+    /*border: 1px solid black;*/
+    padding: 8PX;
+}
+
+.buttonbg-green {
+    background-color:#009860;
+    color: white;
+    padding: 6px 10px; /*ระยะห่างของขอบปุ่มและข้อความภายใน*/
+    text-align: center; /*การจัดวางข้อความในปุ่ม (ตรงกลาง)*/
+    text-decoration: none; /*การจัดรูปแบบข้อความ (ไม่มีขีดเส้นใต้)*/
+    display: inline-block; /*การแสดงผลเป็น inline-block*/
+    font-size: 16px; /*ขนาดตัวอักษร*/
+    margin: 2px 2px; /*ระยะห่างรอบขอบปุ่ม*/
+    border-radius: 6px; /*ขอบมน*/
+    border: 0px;
+}
+
+.buttonbg-gray {
+    background-color:gray;
+    color: white;
+    padding: 6px 10px; /*ระยะห่างของขอบปุ่มและข้อความภายใน*/
+    text-align: center; /*การจัดวางข้อความในปุ่ม (ตรงกลาง)*/
+    text-decoration: none; /*การจัดรูปแบบข้อความ (ไม่มีขีดเส้นใต้)*/
+    display: inline-block; /*การแสดงผลเป็น inline-block*/
+    font-size: 16px; /*ขนาดตัวอักษร*/
+    margin: 2px 2px; /*ระยะห่างรอบขอบปุ่ม*/
+    border-radius: 6px; /*ขอบมน*/
+    border: 0px;
+}
+
+th, td {
+        /*font-size: 12px;*/
+    
+    }
+</style>
+
     <!-- Banner Section -->
-    <section class="banner">
-        <div class="banner-logo">
-            <img src="image/Logo.png" alt="Logo">
-        </div>
-    </section>
+<section class="banner">
+    <div class="banner-logo">
+        <img src="image/Logo.png" alt="Logo">
+    </div>
+</section>
 
     <br>
 

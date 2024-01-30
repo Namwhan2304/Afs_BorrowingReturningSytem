@@ -39,11 +39,22 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
             border-radius: 10px;
         }
 
+        .logout {
+            margin: 20px 0px;
+            text-align: center;
+        }
+
+        .logout a {
+            color: red;
+            text-decoration: none; /*การจัดรูปแบบข้อความ (ไม่มีขีดเส้นใต้)*/
+            font-size: 16px; /*ขนาดตัวอักษร*/
+        }
+
     </style>
 
     <div class="table-box" style="margin-top:65px;">
         <div style="margin-top:5px;" class="display-5 text-center">
-            <a href="mobile_home.php" class="custom-link">Account</h1>
+            <a href="mobile_home.php" class="custom-link">Account</h1></a>
         </div>
 
         <style>
@@ -67,10 +78,10 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
             <thead></thead>
             <tbody>
                 <tr>
-                    <td style="width:20%;text-align:center">
+                    <td style="width:25%">
                         <label>ID</label>
                     </td>
-                        <td style="width:80%">
+                        <td style="width:75%">
                         <?php
                             // ตรวจสอบว่ามีข้อผิดพลาดหรือไม่
                             if(isset($_SESSION["username"])) {
@@ -83,10 +94,10 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
                 </tr>
                         
                 <tr>
-                    <td style="width:20%;text-align:center">
+                    <td style="width:25%">
                         <label>Name</label>
                     </td>
-                    <td style="width:80%">
+                    <td style="width:75%">
                         <?php
                             // ตรวจสอบว่ามีข้อผิดพลาดหรือไม่
                             if(isset($_SESSION["username"])) {
@@ -97,9 +108,12 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
                         ?>
                     </td>
                 </tr>
-
             </tbody>
-        </table>    
+        </table>
+
+        <div class="logout">
+            <a href="logout.php" class="logout">Logout</a>
+        </div>
 
     
 

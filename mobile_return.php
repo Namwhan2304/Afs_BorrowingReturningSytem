@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mysqli_stmt_close($updateToolDataStmt);
 
             // แสดงข้อความว่าคืนอุปกรณ์สำเร็จ
-            echo "Equipment returned successfully!";
+            echo '<div class="overlay-message" style="color:green">Equipment returned successfully!</div>';
         } else {
             echo "Error updating tool_data: " . mysqli_error($conn);
         }
@@ -43,9 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_stmt_close($updateBorrowingStmt);
 }
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,77 +60,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include 'mobile_banner.php'; ?>
 
     <style>
-            div.table-box {
-                margin-top: 65px;
-                margin-bottom: 80px;
-                margin-left: auto;
-                margin-right: auto;
-                padding: 10px;
-                width: 85%;
-                box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.15);
-                border-radius: 10px;
-            }
-            table {
-                width: 85%;
-                border-collapse: collapse;
-                margin-left: auto;
-                margin-right: auto;
-                margin-top: 10PX;
-            }
+        div.table-box {
+            margin-top: 65px;
+            margin-bottom: 80px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px;
+            width: 85%;
+            box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+        }
 
-            tbody tr {
-                height: 45px;
-            }
+        table {
+            width: 85%;
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10PX;
+        }
 
-            .st-right {
-                justify-content: center;
-                align-items: center;
-            }
+        tbody tr {
+            height: 45px;
+        }
 
-            .st-right input {
-                justify-content: center;
-                align-items: center;
-                margin-left: 70%;
-            }
-        </style>
+        .st-right {
+            justify-content: center;
+            align-items: center;
+        }
+
+        .st-right input {
+            justify-content: center;
+            align-items: center;
+            margin-left: 70%;
+        }
+
+        .overlay-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: green;
+            font-size: 20px;
+        }
+    </style>
 
     <div class="table-box" style="margin-top:65px">
         <h1 class="display-5 text-center">Return Tool</h1>
-        
-        
+
         <table>
             <thead></thead>
 
             <tbody>
-                <form method="POST" action="process_return.php">
-                <!-- Add your form fields here, e.g., Equipment ID, Return Date, etc. -->
-            
-                <tr>
-                    <td style="width:25%">
-                        <label for="equipment_id">Tool ID</label>
-                    </td>
-                    <td style="width:75%">
-                        <input type="text" name="equipment_id" required class="form-control">
-                    </td>
-                </tr>
-            
-                <tr>
-                    <td style="width:25%">
-                        <label for="return_date">Return Date</label>
-                    </td>
-                    <td style="width:75%">
-                        <input type="date" name="return_date" required class="form-control" value="<?php echo date('Y-m-d'); ?>">
-                    </td>
-                </tr>
-                </form>
+                <form method="POST" action="mobile_return.php">
+                    <!-- Add your form fields here, e.g., Equipment ID, Return Date, etc. -->
+
+                    <tr>
+                        <td style="width:25%">
+                            <label for="equipment_id">Tool ID</label>
+                        </td>
+                        <td style="width:75%">
+                            <input type="text" name="equipment_id" required class="form-control">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="width:25%">
+                            <label for="return_date">Return Date</label>
+                        </td>
+                        <td style="width:75%">
+                            <input type="date" name="return_date" required class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                        </td>
+                    </tr>
             </tbody>
-        </table>
-        <div class="st-right">
-            <input type="submit" class="btn btn-success mt-2" value="Return">
-    
+            </table>
+            <div class="st-right">
+                <input type="submit" class="btn btn-success mt-2" value="Return">
+            </div>
+            </form>
         </div>
-    </div>
 
-
-</body>
-</html>
+    </body>
+    </html>
