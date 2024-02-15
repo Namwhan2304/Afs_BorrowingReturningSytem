@@ -32,13 +32,55 @@
             ?>
         </div>
 
-        
+<style>
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+    border: none;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    width: 140px;
+    z-index: 99;
+    /*border: 1px solid #DDD;*/
+    border-radius: 10px;
+    background-color: #f5f5f5;
+}
+
+.dropdown-content a {
+    color: gray;
+    padding: 5px 5px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    color: black;
+    background-color: #e1e1e1;
+    border-radius: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+</style>
+        
         <ul class="menu">
             <Li><a href="home_page.php">Home</a></Li>
             <Li><a href="tool_show.php">Tool</a></Li>
             <Li><a href="employee_show.php">Employee</a></Li>
-            <Li><a href="logout.php">Logout</a></Li>
+
+            <Li><div class="dropdown">
+                    Account
+                    <div class="dropdown-content">
+                    <a href="home_password.php">Change password</a>
+                    <a href="logout.php">Logout</a>
+                    </div>
+                </div></Li>
         </ul>
     </nav>
 </div>

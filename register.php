@@ -21,21 +21,21 @@ include 'condb.php'; //เรียกใช้ condb.php เพื่อเช�
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // ตรวจสอบว่ามีค่าที่ส่งมาจริง ๆ หรือไม่
-    if(isset($_POST["idem"]) && isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["phone"]) && isset($_POST["username"]) && isset($_POST["password"])) {
+    if(isset($_POST["idem"]) && isset($_POST["fname"]) && isset($_POST["lname"]) && isset($_POST["phone"]) && isset($_POST["password"])) {
         
         // นำข้อมูลจากฟอร์ม
         $idem = $_POST["idem"];
         $fname = $_POST["fname"];
         $lname = $_POST["lname"];
         $phone = $_POST["phone"];
-        $username = $_POST["username"];
+        //$username = $_POST["username"];
         $password = $_POST["password"];
         //เข้ารหัส password ด้วย sha512
-        //$password=hash('sha512',$password);
+        $password=hash('sha512',$password);
 
         // เขียนคำสั่ง SQL เพื่อบันทึกข้อมูล
-        $sql = "INSERT INTO employee_data (ID_Employee, Em_FirstName, Em_LastName, Em_Phone, UserName, Password, Status)
-        VALUES ('$idem','$fname', '$lname', '$phone', '$username', '$password', '0')";
+        $sql = "INSERT INTO employee_data (ID_Employee, Em_FirstName, Em_LastName, Em_Phone, Password, Status)
+        VALUES ('$idem','$fname', '$lname', '$phone', '$password', '0')";
 
         // ทำการ query และตรวจสอบการทำงาน
         if (mysqli_query($conn, $sql)) {
@@ -52,7 +52,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!------------------------------------------------------------------>
+<style>
+.box {
+    border: 1px solid rgb(180, 180, 180);
+    width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+}
+
+.center {
+    text-align: center;
+    
+}
+
+.buttonbg-green {
+    background-color:#009860;
+    color: white;
+    padding: 6px 10px; /*ระยะห่างของขอบปุ่มและข้อความภายใน*/
+    text-align: center; /*การจัดวางข้อความในปุ่ม (ตรงกลาง)*/
+    text-decoration: none; /*การจัดรูปแบบข้อความ (ไม่มีขีดเส้นใต้)*/
+    display: inline-block; /*การแสดงผลเป็น inline-block*/
+    font-size: 16px; /*ขนาดตัวอักษร*/
+    margin: 2px 2px; /*ระยะห่างรอบขอบปุ่ม*/
+    border-radius: 6px; /*ขอบมน*/
+    border: 0px;
+}
+
+.buttonbg-gray {
+    background-color:gray;
+    color: white;
+    padding: 6px 10px; /*ระยะห่างของขอบปุ่มและข้อความภายใน*/
+    text-align: center; /*การจัดวางข้อความในปุ่ม (ตรงกลาง)*/
+    text-decoration: none; /*การจัดรูปแบบข้อความ (ไม่มีขีดเส้นใต้)*/
+    display: inline-block; /*การแสดงผลเป็น inline-block*/
+    font-size: 16px; /*ขนาดตัวอักษร*/
+    margin: 2px 2px; /*ระยะห่างรอบขอบปุ่ม*/
+    border-radius: 6px; /*ขอบมน*/
+    border: 0px;
+}
+</style>
 
 <section class="banner">
     <div class="banner-logo">
@@ -82,10 +125,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label>Phone number </label>
             <input type="text" name="phone" required class="form-control mb-1" maxlength="10"> 
             </div> 
-        <div class="col-auto">
+        <!--div class="col-auto">
             <label>Username</label>
             <input type="text" name="username" required class="form-control mb-2">
-            </div> 
+            </div--> 
         <div class="col-auto">
             <label>Password</label>
             <input type="password" name="password" required class="form-control" maxlength="10"> 

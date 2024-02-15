@@ -1,26 +1,17 @@
 <?php
 include 'php_session_start.php';;
 
-// ตัวแปร $subcategories ที่เก็บข้อมูลเกี่ยวกับ subcategory
-$subcategories = array(
-    "Electrical tools" => ["Set A", "Set B"],
-    "Ladders" => ["Platform ladders", "A-Frame", "Single/Extension ladder"],
-    "Trolley" => ["AFS1", "AFS2", "AFS3", "AFS4", "AFS5", "AFS6"]
-);
-
 // ตรวจสอบว่ามีการส่งข้อมูลแบบ POST มาหรือไม่
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // ตรวจสอบว่าข้อมูลที่จำเป็นไม่ว่างเปล่าหรือไม่
     if (
-        !empty($_POST["toolname"]) &&
+        !empty($_POST["tool_name"]) &&
         !empty($_POST["maintype"]) &&
-        !empty($_POST["subtype"]) &&
         !empty($_POST["toolamount"])
     ) {
-        $toolname = mysqli_real_escape_string($conn, $_POST["toolname"]);
+        $tool_name = mysqli_real_escape_string($conn, $_POST["tool_name"]);
         $maintype = mysqli_real_escape_string($conn, $_POST["maintype"]);
-        $subtype = mysqli_real_escape_string($conn, $_POST["subtype"]);
         $toolamount = mysqli_real_escape_string($conn, $_POST["toolamount"]);
         
         // Upload image
@@ -35,11 +26,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         for ($i = 0; $i < $toolamount; $i++) {
             // สร้างรหัสตามที่กำหนด
             $mainCategoryID = sprintf('%02d', array_search($maintype, array("Electrical tools", "Ladders", "Trolley")) + 1);
-            $subCategoryID = sprintf('%02d', array_search($subtype, $subcategories[$maintype]) + 1);
         
             // เตรียม SQL Query สำหรับการเพิ่มข้อมูลลงในฐานข้อมูล
-            $sql = "INSERT INTO tool_data (Tool_Name, ID_MainCategoryTool, ID_SubcategoryTool, Tool_Image, Equipment_Sequence, Status)
-                    VALUES ('charger', '01', '01', 'tool_65b1a1004cfc8.jpg'," . ($i + 1) . ", '0')";
+            $sql = "INSERT INTO tool_data (Tool_Name, ID_MainCategoryTool, Tool_Image, Equipment_Sequence, Status)
+                    VALUES ('$tool_name', '$maintype', '$new_image_name'," . ($i + 1) . ", '0')";
         
             // ทำการ query และตรวจสอบผลลัพธ์
             if (mysqli_query($conn, $sql)) {
@@ -69,34 +59,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <?php include 'banner.php'; ?>
 
-<div class="margin-addpage"> 
+<div style="width:50%;margin-left: auto;margin-right: auto"> 
     <h1 class="display-5 text-center mb-2">Add Tool</h1>
 
     <form name="form1" method="post" action="tool_add.php" enctype="multipart/form-data">
 
         <div class="h6 mt-2"> 
             <label>Name tool</label>
-            <input type="text" name="toolname" required class="form-control"> <!--required ห้ามเว้นช่องว่าง-->
+            <input type="text" name="tool_name" required class="form-control"> <!--required ห้ามเว้นช่องว่าง-->
         </div>
 
         <div class="h6 mt-2"> 
             <label>Maincategory</label> 
             <select class="form-select form-select" id="MainCategoryDropdown" name="maintype" aria-label="Default select example">
                 <option disabled selected>Open this select menu</option>
-                <option value="Electrical tools">Electrical tools</option>
-                <option value="Ladders">Ladders</option>
-                <option value="Trolley">Trolley</option>
+                <option value="1">Electrical tools</option>
+                <option value="2">Ladders</option>
+                <option value="3">Trolley</option>
             </select>
         </div>
 
-        <!-- เพิ่มแอตทริบิวต์ name ให้กับ dropdown ของ subcategory -->
-        <div class="h6 mt-2"> 
-            <label>Subcategory</label>
-            <select class="form-select form-select" name="subtype" id="SubCategoryDropdown" aria-label="Default select example">
-                <option disabled selected>Open this select menu</option>
-                <!-- ตัวเลือก Subcategory จะถูกเพิ่มผ่าน JavaScript -->
-            </select>
-        </div>
 
 
 
@@ -107,44 +89,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // รับ reference ของ dropdown แรก
         var MainCategoryDropdown = document.getElementById("MainCategoryDropdown");
 
-        // รับ reference ของ dropdown ที่สอง
-        var SubCategoryDropdown = document.getElementById("SubCategoryDropdown");
-
-        // กำหนด option เริ่มต้นสำหรับ dropdown ที่สอง
-        SubCategoryDropdown.innerHTML = '<option disabled selected>Open this select menu</option>';
-
-        // รายการของหมวดหมู่ย่อยที่จะใส่เข้าไปใน dropdown ที่สอง
-        var subcategories = {
-            "Electrical tools": ["Set A", "Set B"],
-            "Ladders": ["Platform ladders", "A-Frame", "Single/Extension ladder"],
-            "Trolley": ["AFS1", "AFS2", "AFS3", "AFS4", "AFS5", "AFS6"]
-        };
-
         // เพิ่ม Event Listener สำหรับ dropdown แรก
             MainCategoryDropdown.addEventListener("change", function () {
                 // ดึงค่าที่ถูกเลือกจาก dropdown แรก
                 var SelectedMainCategory = MainCategoryDropdown.value;
-
-                // ล้าง option ใน dropdown ที่สอง
-            SubCategoryDropdown.innerHTML = '<option disabled selected>Open this select menu</option>';
-
-            // เติม option ใหม่ลงใน dropdown ที่สอง ตามหมวดหมู่ที่ถูกเลือก
-            subcategories[SelectedMainCategory].forEach(function (subcategory) {
-                var option = document.createElement("option");
-                option.value = subcategory;
-                option.textContent = subcategory;
-                SubCategoryDropdown.appendChild(option);
-            });
         });
 
-        // เพิ่ม option ใน dropdown ที่สอง เมื่อหน้าเว็บโหลดเสร็จ
-        var SelectedMainCategory = MainCategoryDropdown.value;
-        subcategories[SelectedMainCategory].forEach(function (subcategory) {
-            var option = document.createElement("option");
-            option.value = subcategory;
-            option.textContent = subcategory;
-            SubCategoryDropdown.appendChild(option);
-        });
     });
     </script>
     <!-- End JavaScript -->

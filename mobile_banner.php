@@ -90,7 +90,8 @@
         color: black;
         justify-content: space-between;
         vertical-align: middle;
-        box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid #DDD;
+        
     }
     
     /*-------Home-------*/

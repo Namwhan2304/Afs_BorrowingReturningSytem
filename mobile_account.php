@@ -27,28 +27,6 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
             color: black;
             text-decoration: none; /* เอาเส้นล้างข้อความออก */
         }
-        
-        div.table-box {
-            margin-top: 20px;
-            margin-bottom: 80px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 10px;
-            width: 85%;
-            box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
-        }
-
-        .logout {
-            margin: 20px 0px;
-            text-align: center;
-        }
-
-        .logout a {
-            color: red;
-            text-decoration: none; /*การจัดรูปแบบข้อความ (ไม่มีขีดเส้นใต้)*/
-            font-size: 16px; /*ขนาดตัวอักษร*/
-        }
 
     </style>
 
@@ -58,11 +36,22 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
         </div>
 
         <style>
+            div.table-box {
+                margin-top: 20px;
+                margin-bottom: 80px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 10px;
+                width: 85%;
+                box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.15);
+                border-radius: 10px;
+            }
+
             table {
-                width: 80%;
+                width: 70%;
                 border-collapse: collapse;
-                margin-left: 15%;
-                margin-right: 15%;
+                margin-left: auto;
+                margin-right: auto;
                 margin-top: 10PX;
                 /*border: 1px solid green;*/
             }
@@ -72,6 +61,33 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
                 /*border: 1px solid green;*/
             }
 
+            .change {
+                text-align: center;
+                margin: 15px;
+                
+            }
+
+            .change a{
+                /*border: 1px solid green;*/
+                padding: 10px;
+                text-decoration: none; /* เอาเส้นล้างข้อความออก */
+                font-size: 14px;
+                text-align: center;
+                color: blue;
+                text-decoration: none;
+            }
+
+            .logout {
+                margin-bottom: 15px;
+                text-align: center;
+            }   
+
+            .logout a {
+                color: red;
+                padding: 10px;
+                text-decoration: none; /*การจัดรูปแบบข้อความ (ไม่มีขีดเส้นใต้)*/
+                font-size: 16px; /*ขนาดตัวอักษร*/
+            }
         </style>
 
         <table>
@@ -110,6 +126,10 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
                 </tr>
             </tbody>
         </table>
+
+        <div class="change">
+            <a href="mobile_account_password.php" class="">Change password</a>  
+        </div>
 
         <div class="logout">
             <a href="logout.php" class="logout">Logout</a>

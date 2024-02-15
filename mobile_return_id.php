@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Return Equipment</title>
+    <title>Return Tool</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="mobile.css">
@@ -117,23 +117,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 16px;
         }
 
-        .st-right {
-            justify-content: center;
-            align-items: center;
-        }
-
-        .st-right input {
-            justify-content: center;
-            align-items: center;
-            margin-left: 70%;
-        }
-
         .overlay-message {
             position: absolute;
-            top: 50%;
+            top: 190px;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
+            margin-top: 300px;
+            z-index: 999; /* ค่า z-index ที่สูงกว่าจะทับตัวที่มีค่าน้อยกว่า */
             color: green;
             font-size: 18px;
         }
@@ -163,6 +154,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </td>
                     </tr>
 
+                    <tr style="height: 35px">
+                            <td style="width:25%">
+                                <label>ID</label>
+                            </td>
+                            <td style="width:75%">
+                                <?php
+                                // ตรวจสอบว่ามีข้อผิดพลาดหรือไม่
+                                if(isset($_SESSION["username"])) {
+                                echo "<div style='color:gray'>";
+                                echo "AFS".$_SESSION["username"];
+                                echo "</div>";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+
+                    <tr style="height: 40px">
+                            <td style="width:25%;" >
+                                <label>Name</label>
+                            </td>
+                            <td style="width:75%">
+                                <?php
+                                // ตรวจสอบว่ามีข้อผิดพลาดหรือไม่
+                                if(isset($_SESSION["username"])) {
+                                echo "<div style='color:gray'>";
+                                echo $_SESSION["firstname"]." ".$_SESSION["lastname"];
+                                echo "</div>";
+                                }
+                                ?>
+                            </td>
+                        </tr>
+
                     <!-- แก้ชื่อฟอร์มเป็น 'return_date' -->
                     <tr>
                         <td style="width:40%">
@@ -174,11 +197,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </tr>
 
                     <!-- แก้ชื่อฟอร์มเป็น 'return_date' -->
-                    <div class="st-right">
-                        <input type="submit" class="btn btn-success mt-2" value="Return">
-                    </div>
-                </form>
+
+                
             </table>
+
+            <div style="text-align: center;margin:15px">
+                <input type="submit" class="btn btn-success mt-2 st-right" value="Return">
+            </div>
+            </form>
         </div>
     </body>
 </html>

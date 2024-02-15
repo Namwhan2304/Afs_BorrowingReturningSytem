@@ -7,48 +7,73 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ID_Tool = mysqli_real_escape_string($conn, $_POST['id_tool']);
     $Site = mysqli_real_escape_string($conn, $_POST['site']);
     $Date_Borrow = mysqli_real_escape_string($conn, $_POST['date_borrow']);
-    $Status = 1;
 
     // ดึง ID_Employee จาก session
     $username = mysqli_real_escape_string($conn, $_SESSION["username"]);
 
-    // เขียน SQL Query เพื่อบันทึกข้อมูล
-    $sql = "INSERT INTO borrowing (ID_Employee, ID_Tool, Site, Date_Borrow, Status) VALUES (?, ?, ?, ?, ?)";
-    $stmt = mysqli_prepare($conn, $sql);
-
+    // ดึงข้อมูล Status จากตาราง tool_data
+    $statusSql = "SELECT Status FROM tool_data WHERE ID = ?";
+    $statusStmt = mysqli_prepare($conn, $statusSql);
+    
     // Bind parameters
-    mysqli_stmt_bind_param($stmt, "sissi", $username, $ID_Tool, $Site, $Date_Borrow, $Status);
-
+    mysqli_stmt_bind_param($statusStmt, "i", $ID_Tool);
+    
     // Execute the statement
-    if (mysqli_stmt_execute($stmt)) {
-        // บันทึกข้อมูลสำเร็จ
+    if (mysqli_stmt_execute($statusStmt)) {
+        // Bind the result
+        mysqli_stmt_bind_result($statusStmt, $Status);
 
-        // อัพเดตสถานะในตาราง tool_data เป็น 1
-        $updateSql = "UPDATE tool_data SET Status = 1 WHERE ID = ?";
-        $updateStmt = mysqli_prepare($conn, $updateSql);
+        // Fetch the result
+        mysqli_stmt_fetch($statusStmt);
 
-        // Bind parameters
-        mysqli_stmt_bind_param($updateStmt, "i", $ID_Tool);
+        // ปิด statement ของดึงข้อมูล Status
+        mysqli_stmt_close($statusStmt);
 
-        // Execute the update statement
-        if (mysqli_stmt_execute($updateStmt)) {
-        // อัพเดตสถานะสำเร็จ
-        echo '<div class="overlay-message" style="color:green">Successful</div>';
+        // ตรวจสอบ Status
+        if ($Status == 0) {
+            // เปลี่ยนค่า Status เป็น 1
+            $updateStatusSql = "UPDATE tool_data SET Status = 1 WHERE ID = ?";
+            $updateStatusStmt = mysqli_prepare($conn, $updateStatusSql);
+            
+            // Bind parameters
+            mysqli_stmt_bind_param($updateStatusStmt, "i", $ID_Tool);
+            
+            // Execute the update statement
+            if (mysqli_stmt_execute($updateStatusStmt)) {
+                // ปิด statement ของ update Status
+                mysqli_stmt_close($updateStatusStmt);
 
+                // เขียน SQL Query เพื่อบันทึกข้อมูลการยืม
+                $insertSql = "INSERT INTO borrowing (ID_Employee, ID_Tool, Site, Date_Borrow, Status) VALUES (?, ?, ?, ?, 1)";
+                $insertStmt = mysqli_prepare($conn, $insertSql);
+                
+                // Bind parameters
+                mysqli_stmt_bind_param($insertStmt, "iiss", $username, $ID_Tool, $Site, $Date_Borrow);
+                
+                // Execute the insert statement
+                if (mysqli_stmt_execute($insertStmt)) {
+                    // ปิด statement ของ insert
+                    mysqli_stmt_close($insertStmt);
+
+                    echo '<div class="overlay-message" style="color:green">Successful</div>';
+                } else {
+                    echo "Error executing insert statement: " . mysqli_error($conn);
+                }
+            } else {
+                echo "Error updating Status: " . mysqli_error($conn);
+            }
         } else {
-        echo "Error updating tool_data: " . mysqli_error($conn);
+            echo '<div class="overlay-message" style="color:red">Tool is not available</div>';
         }
-
-        // ปิด statement ของ update
-        mysqli_stmt_close($updateStmt);
-        } else {
-        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    } else {
+        echo "Error executing status statement: " . mysqli_error($conn);
     }
-
-    // ปิด statement ของ insert
-    mysqli_stmt_close($stmt);
 }
 ?>
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -73,11 +98,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <style>
         .overlay-message {
             position: absolute;
-            top: 190px;
+            top: 460px;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
-            margin-top: 300px;
             z-index: 999; /* ค่า z-index ที่สูงกว่าจะทับตัวที่มีค่าน้อยกว่า */
         }
         div.table-box {
@@ -95,9 +119,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             text-decoration: none; /* เอาเส้นล้างข้อความออก */
         }
 
-    </style>
-
-<style>
         #video {
             width: 100%;
             height: 100px;
@@ -121,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             margin-top: 20px;
             font-size: 18px;
         }
-</style>
+    </style>
 
     <div class="table-box" style="margin-top:65px;">
         <div class="display-5 text-center">
@@ -201,11 +222,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <!--input type="number" name="id_tool" required class="form-control"-->
                                 <!-- Video feed from the camera -->
                                 <video id="video" autoplay></video>
-
-                                <!-- Capture button with camera icon -->
-                                <button id="captureButton" onclick="captureQRCode()">
-                                📷
-                                </button>
+                                <button id="captureButton" onclick="captureQRCode()">📷</button>
                                 <script>
                                     // Get the video element and set up camera access
                                     const video = document.getElementById('video');
@@ -226,7 +243,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </td>
                             <td style="width:75%">
                                 <!-- Input field for Tool ID -->
-                                <input type="number" name="id_tool" class="form-control">
+                                <input type="number" name="id_tool" id="toolIdInput" class="form-control">
                             </td>
                             
                         </tr>
@@ -249,19 +266,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </td>
                         </tr>
 
-                        <tr>
-                            <td colspan="2">
-                                <div class="st-right">
-                                    <br>
-                                    <input type="submit" class="btn btn-success mt-2" value="Borrow">
-                                </div>
-                            </td>
-                        </tr>
-                    </form>
+                    
                 </div>
             </tbody>
-        </table>
-
+            </table>
+        <div style="text-align: center;margin-top:35px ;margin-bottom:15px">
+            <input type="submit" class="btn btn-success mt-2" value="Borrow">
+        </div>
+        </form>
+        
+        
 <!-- Include the ZXing library -->
 <script src="https://cdn.rawgit.com/zxing-js/library/gh-pages/dist/instascan.min.js"></script>
 
@@ -293,34 +307,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             console.error('Error accessing camera: ', error);
         });
 
-    // Function to capture QR Code from the video feed
-    function captureQRCode() {
-        // Create a canvas element to draw the captured photo
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
+// Function to capture QR Code from the video feed
+function captureQRCode() {
+    // Create a canvas element to draw the captured photo
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
 
-        // Set the canvas dimensions to match the video feed
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
+    // Set the canvas dimensions to match the video feed
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
 
-        // Draw the current video frame onto the canvas
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // Draw the current video frame onto the canvas
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        // Convert the canvas content to a data URL (base64 encoded image)
-        const imageDataUrl = canvas.toDataURL('image/png');
+    // Convert the canvas content to a data URL (base64 encoded image)
+    const imageDataUrl = canvas.toDataURL('image/png');
 
-        // Send the image data to the server or process it as needed
-        processImageData(imageDataUrl);
-    }
+    // Process the captured image data (send to server, etc.)
+    processImageData(imageDataUrl);
+}
 
-    // Function to process the captured image data (send to server, etc.)
-    function processImageData(imageDataUrl) {
-        // Decode the QR Code image data using Instascan
-        const decodedData = instascan.decode(imageDataUrl);
+// Function to process the captured image data (send to server, etc.)
+function processImageData(imageDataUrl) {
+    // Decode the QR Code image data using Instascan
+    const decodedData = instascan.decode(imageDataUrl);
 
-        // Update the input field with the decoded data
-        document.getElementById('toolIdInput').value = decodedData;
-    }
+    // Update the input field with the decoded data
+    document.getElementById('toolIdInput').value = decodedData;
+}
+
 </script>
 
 

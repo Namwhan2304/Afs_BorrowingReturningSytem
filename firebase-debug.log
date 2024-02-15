@@ -1,0 +1,25 @@
+[debug] [2024-02-05T22:38:27.307Z] ----------------------------------------------------------------------
+[debug] [2024-02-05T22:38:27.310Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Phuthita Buaket\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2024-02-05T22:38:27.310Z] CLI Version:   13.1.0
+[debug] [2024-02-05T22:38:27.310Z] Platform:      win32
+[debug] [2024-02-05T22:38:27.311Z] Node Version:  v20.11.0
+[debug] [2024-02-05T22:38:27.311Z] Time:          Tue Feb 06 2024 09:38:27 GMT+1100 (Australian Eastern Daylight Time)
+[debug] [2024-02-05T22:38:27.311Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-02-05T22:38:27.317Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-02-05T22:38:27.318Z] > authorizing via signed-in user (phuthita.bu@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\xampp\htdocs\Afs_BorrowingReturningSytem
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+

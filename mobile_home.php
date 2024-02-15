@@ -166,11 +166,15 @@ if (!$conn) {
 
 
         <tbody>
+        
         <?php
+
+            $username = $_SESSION["username"];
+
             $sql = "SELECT borrowing.*, tool_data.Tool_Name, tool_data.Tool_Image, Equipment_Sequence
             FROM borrowing
             JOIN tool_data ON borrowing.ID_Tool = tool_data.ID
-            WHERE borrowing.ID_Employee = '$username'AND borrowing.Status= 1";
+            WHERE borrowing.ID_Employee = '$username' AND borrowing.Status= 1";
 
             $result = mysqli_query($conn, $sql);
 
@@ -195,7 +199,7 @@ if (!$conn) {
 
                     <td style="width:10%">
                     <a href="mobile_return_id.php?id=<?php echo $row["ID_Borrowing"]; ?>" class="button buttongreen">Return</a>
-                        <br><a href="mobile_borrow.php" class="button buttongreen">Borrow</a>
+                        <br><a href="mobile_borrow_id.php?id=<?php echo $row["ID_Borrowing"]; ?>" class="button buttongreen">Borrow</a>
                     </td>
                 </tr>
             <?php

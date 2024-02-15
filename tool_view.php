@@ -46,9 +46,8 @@ if (isset($_GET['id'])) {
             <tr> 
                 <th style="width:10%">Image</th>
                 <th style="width:10%">ID</th>
-                <th style="width:15%">Name</th>
-                <th style="width:15%">Category</th>
-                <th style="width:10%">Subcategory</th>
+                <th style="width:10%">Name</th>
+                <th style="width:10%">Category</th>
                 <th style="width:10%">Sequence</th>
                 <th style="width:10%">Status</th>
                 <th style="width:5%">Edit</th>
@@ -61,10 +60,9 @@ if (isset($_GET['id'])) {
         <tbody>
         
     <?php
-        $sql = "SELECT tool_data.*, tool_maincategory.Name_MainCategory, tool_subcategory.Name_SubCategory
+        $sql = "SELECT tool_data.*, tool_maincategory.Name_MainCategory
         FROM tool_data
         LEFT JOIN tool_maincategory ON tool_data.ID_MainCategoryTool = tool_maincategory.ID_MainCategory
-        LEFT JOIN tool_subcategory ON tool_data.ID_SubCategoryTool = tool_subcategory.ID_SubCategory
         WHERE tool_data.Tool_Name = '$toolName'";
 
         $result = mysqli_query($conn, $sql);
@@ -75,7 +73,6 @@ if (isset($_GET['id'])) {
             <td><?= $row["ID"] ?></td>
             <td><?= $row["Tool_Name"] ?></td>
             <td><?= $row["Name_MainCategory"] ?></td>
-            <td><?= $row["Name_SubCategory"] ?></td>
             <td><?= $row["Equipment_Sequence"] ?></td>
             <td>    <?php
                 if ($row["Status"] == 0) {
@@ -92,7 +89,7 @@ if (isset($_GET['id'])) {
                     echo "</div>";
                 }
                 ?></td>
-            <td> <a href="tool_view.php?id=<?= $row["ID"] ?>" class="btn btn-secondary ">Edit</a> </td>
+            <td> <a href="tool_edit.php?id=<?= $row["ID"] ?>" class="btn btn-secondary ">Edit</a> </td>
             <td> <a href="tool_delete.php?id=<?= $row["ID"] ?>" class="btn btn-danger" onclick="Del(this.href);return false;">Delete</a> </td>
         </tr>
         

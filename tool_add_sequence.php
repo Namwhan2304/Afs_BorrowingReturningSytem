@@ -20,12 +20,12 @@ if (isset($_GET['id'])) {
     $rowData = mysqli_fetch_assoc($resultData);
 
 
-    $sqlInsert = "INSERT INTO tool_data (Tool_Name, ID_MainCategoryTool, ID_SubcategoryTool, Tool_Image, Equipment_Sequence) VALUES ('$toolName','$ID_MainCategoryTool', '$ID_SubcategoryTool', '$Tool_Image' , $maxSequence + 1)";
+    $sqlInsert = "INSERT INTO tool_data (Tool_Name, ID_MainCategoryTool, ID_SubcategoryTool, Tool_Image, Equipment_Sequence, Status) VALUES ('$toolName','$ID_MainCategoryTool', '$ID_SubcategoryTool', '$Tool_Image' , $maxSequence + 1 ,'0')";
     
     if (mysqli_query($conn, $sqlInsert)) {
         $newToolId = mysqli_insert_id($conn); // รับค่า ID ของ Tool ที่ถูกสร้างขึ้น
-            echo "<script>alert('Record added successfully');</script>";
-            echo "<script>window.location = 'tool_view.php?id=<?= $toolName?>';</script>";
+            //echo "<script>alert('Record added successfully');</script>";
+            //echo "<script>window.location = 'tool_view.php?id=<?= $toolName?-->';</script>";
 
     } else {
         echo "Error: " . $sqlInsert . "<br>" . mysqli_error($conn);

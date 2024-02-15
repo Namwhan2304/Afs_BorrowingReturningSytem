@@ -7,7 +7,7 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accout</title>
+    <title>Status of tools</title>
 
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"> 
     <!---Link to css-->
@@ -72,7 +72,20 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
     <div style="margin-top:10px;" class="display-5 text-center">
         <a href="mobile_tool.php" class="custom-link">Status of tools</a>  
     </div>
-    <!--  End Heading Status of tools  -->
+
+    <form class="search-box" method="POST">
+        <div class="search">
+            <input type="search" name="keyword" placehoder="search">
+            <button class="buttonbg">
+                <i class="bi bi-search"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+            </button>
+        </div>
+    </form>
+
+
 
     <div class="button">
         <a href="mobile_tool_available.php" class="">Available</a>    
@@ -124,6 +137,65 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
             text-align: left;
         }
 
+    .search-box {
+        position: relative;
+        width: 100%;
+        /*border: 1px solid gray;*/
+        vertical-align: middle;
+        text-align: center;
+        padding: 10px 0px;
+        align-items: center;
+    }
+
+    .search-box input {
+        width: 80%;
+        border: none;
+        z-index: 1;
+        padding: 0px 6px;
+        border-radius: 20px;
+    }
+
+    .search {
+        border: 1px solid gray;
+        width: 220px;
+        border-radius: 25px;
+        padding: 4px 0px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    input[type="search"]:focus,
+        select:focus {
+            outline: none;
+            background-color: none;
+            box-shadow: none;
+        }
+
+    input[type="search"] :active{
+        border: none;
+        background-color: none;
+        outline: none;
+        box-shadow: none;
+    }
+
+    .buttonbg {
+        background-color: white;
+        color: lightgray;
+        padding: 0% 2%; /*ระยะห่างของขอบปุ่มและข้อความภายใน*/
+        /*padding-bottom: 2%;*/
+        display: inline-block; /*การแสดงผลเป็น inline-block*/
+        transition-duration: 0.4s; /*ระยะเวลาที่ใช้ในการเปลี่ยนสีเมื่อ hover (0.4 วินาที)*/
+        cursor: pointer; /*รูปลูกศรของเมาส์เมื่อชี้ไปยังปุ่ม*/
+        border: none;
+    }
+    .buttonbg:hover{
+        color: gray;
+        border: none;
+    }
+
+    .buttonbg svg{
+        margin-top: -3px;
+    }
 
     </style>
 
@@ -139,17 +211,28 @@ include 'php_session_start.php'; //เรียกใช้ condb.php เพื�
         <!-- Body Table -->
         <tbody>
 
-        
-    <?php
-        $sql = "SELECT tool_data.*, tool_maincategory.Name_MainCategory, tool_subcategory.Name_SubCategory
-        FROM tool_data
-        JOIN tool_maincategory ON tool_data.ID_MainCategoryTool = tool_maincategory.ID_MainCategory
-        JOIN tool_subcategory ON tool_data.ID_SubCategoryTool = tool_subcategory.ID_SubCategory
-        WHERE tool_data.Status = 1";
+        <?php
+        $key_word = @$_POST['keyword'];
+        if($key_word !="") {
+            $sql = "SELECT tool_data.*, tool_maincategory.Name_MainCategory, tool_subcategory.Name_SubCategory
+                FROM tool_data
+                JOIN tool_maincategory ON tool_data.ID_MainCategoryTool = tool_maincategory.ID_MainCategory
+                JOIN tool_subcategory ON tool_data.ID_SubCategoryTool = tool_subcategory.ID_SubCategory
+                WHERE (ID like '%$key_word%' or Tool_Name like '%$key_word%' or Name_MainCategory like '%$key_word%')
+                AND tool_data.Status = 1 ";
 
-        $result = mysqli_query($conn, $sql);
-        while ($row = mysqli_fetch_array($result)) {
-    ?>
+        }else{
+            $sql = "SELECT tool_data.*, tool_maincategory.Name_MainCategory, tool_subcategory.Name_SubCategory
+                FROM tool_data
+                JOIN tool_maincategory ON tool_data.ID_MainCategoryTool = tool_maincategory.ID_MainCategory
+                JOIN tool_subcategory ON tool_data.ID_SubCategoryTool = tool_subcategory.ID_SubCategory
+                WHERE tool_data.Status = 1 ";
+        }
+            $result = mysqli_query($conn, $sql);
+            while ($row = mysqli_fetch_array($result)) {
+            
+        ?>
+
         <tr>
             <td style="width:20%">
                 <img src="tool_image/<?= $row["Tool_Image"] ?>" width="80px" height="80px" class="center"></td>

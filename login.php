@@ -17,7 +17,7 @@ session_start();
 <style>
 .box {
     border: 1px solid rgb(180, 180, 180);
-    width: 90%;
+    width: 350px;
     margin-left: auto;
     margin-right: auto;
     padding-top: 20px;

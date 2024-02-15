@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // ปิดการเชื่อมต่อ
         mysqli_close($conn);
     } else {
-        echo "All fields are required!";
+        echo "<script>alert('All fields are required!');</script>";
     }
 }
 ?>
